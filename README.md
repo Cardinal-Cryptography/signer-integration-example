@@ -2,37 +2,46 @@
 
 ## Intro
 
-In this tutorial we are creating a simple webapp integrated with Signer. Our app:
+In this tutorial we are creating a simple webapp integrated with the Aleph Zero Signer. Our app will:
 
-- imports and displays accounts from Signer
-- using those accounts signs simple transfer transaction.
+- import and display accounts from Signer;
+- using those accounts, sign simple transfer transaction.
 
 ## Requirements
 
 - Aleph Zero Signer {here past links to where you can get signer for different browsers}
-- node 14.18+ or 16+ (because we are using `vite` with `react`, but not necessarily required if you are using your framework of choice)
+- `node` 14.18+ or 16+ (required to use `vite` with `react`: your dependencies may vary if you choose to use a different framework).
 
 ## Create project
 
-We're using `vite` to set up project. Run:
+We're using [`vite`](https://vitejs.dev/) to set up project. Run:
 
 ```bash
 yarn create vite signer-integration --template react-ts
 ```
 
-or
+or, if you prefer `npm` instead of `yarn`:
 
 ```bash
 npm create vite@latest signer-integration -- --template react-ts
 ```
 
+You will then be able to start the dev server like this:
+```bash
+cd signer-integration
+yarn
+yarn dev
+```
+
 ## Install dependency
 
-Aleph Zero Signer exposes polkadot.{js} dapp extension library API. Check out their [docs](https://polkadot.js.org/docs/extension/).
+Aleph Zero Signer exposes the polkadot.{js} dapp extension library API. You can check out their docs [here](https://polkadot.js.org/docs/extension/).
 
 ```bash
 yarn add @polkadot/extension-dapp
 ```
+
+or:
 
 ```bash
 npm install @polkadot/extension-dapp
@@ -42,29 +51,29 @@ npm install @polkadot/extension-dapp
 
 First, let's make sure Signer was successfully injected into our website.
 
-If Signer (or any other extension supporting this API) is available it is added to `window.injectedWeb3` object.
+If Signer (or any other extension supporting this API) is available, it is added to the `window.injectedWeb3` object.
 
-You can test it, by running this example
+You can test that by running this example:
 
 ```bash
 yarn dev
 ```
 
-and inspecting `injectedWeb3` object to see if Signer is registered.
+and, using your browser's developer console, inspect the `window.injectedWeb3` object to see if Signer is registered.
 
 ![Connect pop-up screenshot][inspect-injected-web3]
 
-Common pitfalls
+Common pitfalls/troubleshooting
 
 - Signer extension wasn't successfully installed
 - Signer is disabled
-- Make sure you site is served from localhost, 127.0.0.1, or over https:// - signer isn't injected in other sites served over http://.
+- Make sure your site is served from localhost, 127.0.0.1, or over https:// - Signer isn't injected on other sites served over http://.
 
 ## Connect to Signer
 
-Now we are going to enable injected extensions (API can handle more than one extension at a time, but in our case it's just the Signer). We using `web3Enable` - a util function from @polkadot/extension-dapp. It enables and returns list of all injected extensions.
+Now we are going to enable injected extensions (API can handle more than one extension at a time, but in our case it's just the Signer). We will be using `web3Enable` - a util function from `@polkadot/extension-dapp`. It enables and returns a list of all injected extensions.
 
-I'm going to call this method in onClick of button `Connect account`.
+We're going to call this method in the `onClick` handler of the 'Connect account' button:
 
 ```jsx
 import { web3Enable } from "@polkadot/extension-dapp";
@@ -84,18 +93,18 @@ const loadAccountsFromExtensions = async () => {
 </button>
 ```
 
-`APP_NAME` is a string - name of an app that's trying to connect.
+`APP_NAME` is a string - a name of an app that's trying to connect.
 
 Important! You have to call `web3Enable` before any other utility functions.
 
-Now, after clicking the button, after going through `Your privacy is protected` screen, you should see one of those pop-ups:
+Now, after clicking the button, after going through `Your privacy is protected` screen, you should see one of these pop-ups:
 
 ![Connect pop-up screenshot][no-accounts]
 ![Connect pop-up screenshot][connect-app-screenshot]
 
 Add an account to Signer if you haven't already and make sure you select the checkbox next to it when connecting. Connecting an account means it's going to be available to a website - we'll be able to get account information and initiate signing transactions.
 
-You can change connected accounts going to:
+You can change connected accounts by going to:
 `settings (top left corner) > Trusted apps > <Your app>`
 
 ## Loading accounts
@@ -131,9 +140,10 @@ above, we're filtering to get only accounts from Signer, but you might choose to
 
 ## Transaction: prepare accounts
 
-We are making transactions on Aleph Zero Testnet. We need two accounts and some funds. Create a second account in Signer. Accounts have associated networks - we want both our account to be have Aleph Zero Testnet selected. You can either select it in account creator or change it in the settings.
+Since we'll be making transactions on the Aleph Zero Testnet, we'll need two accounts and some funds (TZERO).
+Create a second account in the Signer. Accounts have associated networks and we want both our accounts to have Aleph Zero Testnet selected. You can either select it in the account creator or change it later in the settings.
 
-We should add filtering accounts over selected network. `web3Accounts` has a `genesis` param available, for Aleph Zero Testnet we want:
+We should be able to filter the accounts over selected network. To that end, `web3Accounts` has a `genesisHash` param available and for the Aleph Zero Testnet we want:
 
 ```js
 const accounts = await web3Accounts({
@@ -143,17 +153,19 @@ const accounts = await web3Accounts({
 });
 ```
 
-We can now pour some money. Copy first account address and paste it in [faucet](https://faucet.test.azero.dev/). You can check you accounts balances e.g. in https://test.azero.dev/#/accounts (this is also an example of Signer integration).
+### Getting the funds
 
-## Transaction: set up API
+With the accounts ready, we need to set them up with some TZERO (the Aleph Zero Testnet currency). In order to do so, copy first account address and paste it in the address field in the Testnet [Faucet](https://faucet.test.azero.dev/). You'll need to solve a captcha and the system will transfer some TZERO to your account. You can check your accounts' balances e.g. in https://test.azero.dev/#/accounts (which, incidentally, is also an example of a Signer integration).
 
-To create a transaction we are using `@polkadot/api` library - [docs](https://polkadot.js.org/docs/api/).
+## Transaction: set up the API
+
+To create a transaction we are going to be using the `@polkadot/api` library - [docs](https://polkadot.js.org/docs/api/).
 
 ```bash
 yarn add @polkadot/api
 ```
 
-Let's set it up using Aleph Zero Testnet websocket:
+We'll need to set it up and initialize it using the Aleph Zero Testnet websocket:
 
 ```js
 import { ApiPromise, WsProvider } from "@polkadot/api";
@@ -173,18 +185,18 @@ useEffect(() => {
 }, []);
 ```
 
-## Transaction: Signing transaction
+## Transaction: sign a transaction
 
-Next we going to sign simple transfer transaction.
-For sake of simplicity we are going to transfer `50 tzero` from first account to second.
+Next, we are going to sign a simple transfer transaction.
+For the sake of simplicity we are going to transfer `50 TZERO` from the first account to the second one.
 
-We should use big number from `@polkadot/util` to make sure we don't exceed JavaScript safe integer range.
+Note that we're using the big number implementation from `@polkadot/util` to make sure we don't exceed JavaScript's safe integer range.
 
 ```bash
 yarn add @polkadot/util
 ```
 
-The balance on chain is kept in pico tzero (10<sup>-12</sup>), so we need to adjust transferred value. Instead of hardcoding the value we can use information from `api`.
+The balance on chain is kept in pico TZERO (10<sup>-12</sup>), so we need to adjust the transferred value. Instead of hardcoding the units here, we can get this information from the `api`.
 
 ```jsx
 import { web3FromAddress } from "@polkadot/extension-dapp";
@@ -208,17 +220,17 @@ const makeTransfer = async () => {
 <button onClick={makeTransfer}>Make transfer</button>;
 ```
 
-After clicking the button you should see Signer pop-up:
+After clicking the button you should see the Signer pop-up:
 
 ![Connect pop-up screenshot][transfer-authorization]
 
-Confirm and check your accounts balances in https://test.azero.dev/#/accounts.
+Lastly, you can confirm and check your accounts' balances in https://test.azero.dev/#/accounts.
 
-Important! Just because transaction Promise doesn't throw, doesn't mean it succeeded - see https://polkadot.js.org/docs/api/cookbook/tx/#how-do-i-get-the-decoded-enum-for-an-extrinsicfailed-event.
+Important! Just because the transaction Promise doesn't throw an exception, it doesn't mean it succeeded - see https://polkadot.js.org/docs/api/cookbook/tx/#how-do-i-get-the-decoded-enum-for-an-extrinsicfailed-event.
 
-## Finishing notes
+## Closing remarks
 
-Hope this guide enables you to integrate with Signer smoothly.
+We hope this guide helps you to seamlessly integrate your app with the Signer.
 In case of questions / bug reports / to find more content go to
 `<here some links probably?>`
 
