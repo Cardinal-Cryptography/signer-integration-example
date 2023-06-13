@@ -10,7 +10,6 @@ import {
 } from "@polkadot/extension-dapp";
 import { BN } from "@polkadot/util";
 
-type InjectedExtension = Awaited<ReturnType<typeof web3Enable>>[number];
 type InjectedAccountWithMeta = Awaited<ReturnType<typeof web3Accounts>>[number];
 
 const ALEPH_ZERO_TESTNET_WS_PROVIDER = new WsProvider(
@@ -25,7 +24,6 @@ const APP_NAME = "Signer integration";
 
 function App() {
   const [api, setApi] = useState<ApiPromise>();
-  const [extensions, setExtensions] = useState<InjectedExtension[]>([]);
   const [accounts, setAccounts] = useState<InjectedAccountWithMeta[]>([]);
 
   useEffect(() => {
@@ -42,7 +40,7 @@ function App() {
     // If extension hasn't connected to your domain before, it will show pop-up for user, to confirm connection.
     const injectedExtensions = await web3Enable(APP_NAME);
 
-    setExtensions(injectedExtensions);
+    console.log({ injectedExtensions });
 
     // Return list of accounts imported from extensions
     // You can filter by different parameters, here we filter over extension name and import only Signer accounts:
@@ -58,8 +56,7 @@ function App() {
   };
 
   const makeTransfer = async () => {
-    const first = accounts[0];
-    const second = accounts[1];
+    const [first, second] = accounts;
 
     const firstAddressInjector = await web3FromAddress(first.address);
 

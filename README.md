@@ -192,8 +192,7 @@ import { web3FromAddress } from "@polkadot/extension-dapp";
 import { BN } from "@polkadot/util";
 
 const makeTransfer = async () => {
-  let first = accounts[0];
-  let second = accounts[1];
+  const [first, second] = accounts;
 
   const firstAddressInjector = await web3FromAddress(first.address);
 
