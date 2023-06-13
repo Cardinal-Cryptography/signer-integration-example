@@ -4,8 +4,8 @@
 
 In this tutorial we are creating a simple webapp integrated with the Aleph Zero Signer. Our app will:
 
-- import and display accounts from Signer;
-- using those accounts, sign simple transfer transaction.
+- import and display accounts from the Signer;
+- sign a simple transfer transaction using those accounts.
 
 ## Requirements
 
@@ -14,34 +14,23 @@ In this tutorial we are creating a simple webapp integrated with the Aleph Zero 
 
 ## Create project
 
-We're using [`vite`](https://vitejs.dev/) to set up project. Run:
-
-```bash
-yarn create vite signer-integration --template react-ts
-```
-
-or, if you prefer `npm` instead of `yarn`:
+We're using [`vite`](https://vitejs.dev/) to set up the project. Run:
 
 ```bash
 npm create vite@latest signer-integration -- --template react-ts
 ```
 
 You will then be able to start the dev server like this:
+
 ```bash
 cd signer-integration
-yarn
-yarn dev
+npm install
+npm run dev
 ```
 
 ## Install dependency
 
 Aleph Zero Signer exposes the polkadot.{js} dapp extension library API. You can check out their docs [here](https://polkadot.js.org/docs/extension/).
-
-```bash
-yarn add @polkadot/extension-dapp
-```
-
-or:
 
 ```bash
 npm install @polkadot/extension-dapp
@@ -56,7 +45,7 @@ If Signer (or any other extension supporting this API) is available, it is added
 You can test that by running this example:
 
 ```bash
-yarn dev
+npm run dev
 ```
 
 and, using your browser's developer console, inspect the `window.injectedWeb3` object to see if Signer is registered.
@@ -71,7 +60,7 @@ Common pitfalls/troubleshooting
 
 ## Connect to Signer
 
-Now we are going to enable injected extensions (API can handle more than one extension at a time, but in our case it's just the Signer). We will be using `web3Enable` - a util function from `@polkadot/extension-dapp`. It enables and returns a list of all injected extensions.
+Now we are going to enable injected extensions (the API can handle more than one extension at a time, but in our case it's just the Signer). We will be using `web3Enable` - a util function from `@polkadot/extension-dapp`. It enables connections and returns a list of all injected extensions.
 
 We're going to call this method in the `onClick` handler of the 'Connect account' button:
 
@@ -97,7 +86,7 @@ const loadAccountsFromExtensions = async () => {
 
 Important! You have to call `web3Enable` before any other utility functions.
 
-Now, after clicking the button, after going through `Your privacy is protected` screen, you should see one of these pop-ups:
+Now, after clicking the button and going through the `Your privacy is protected` screen, you should see one of these pop-ups:
 
 ![Connect pop-up screenshot][no-accounts]
 ![Connect pop-up screenshot][connect-app-screenshot]
@@ -109,7 +98,7 @@ You can change connected accounts by going to:
 
 ## Loading accounts
 
-Now we can use `web3Accounts` helper function to get all accounts provided by Signer
+Now we can use `web3Accounts` helper function to get all accounts provided by the Signer:
 
 ```jsx
 import { web3Accounts } from "@polkadot/extension-dapp";
@@ -136,12 +125,12 @@ setAccounts(accounts);
 </article>
 ```
 
-above, we're filtering to get only accounts from Signer, but you might choose to include all accounts.
+Above, we're filtering to get only accounts from the Signer, but you might choose to include all accounts.
 
 ## Transaction: prepare accounts
 
-Since we'll be making transactions on the Aleph Zero Testnet, we'll need two accounts and some funds (TZERO).
-Create a second account in the Signer. Accounts have associated networks and we want both our accounts to have Aleph Zero Testnet selected. You can either select it in the account creator or change it later in the settings.
+Since we are going to make transactions on the Aleph Zero Testnet, we are going to need two accounts and some funds (TZERO).
+Create a second account in the Signer. Accounts have associated networks and we want both our accounts to have the Aleph Zero Testnet selected. You can either select it in the account creator or change it later in the settings.
 
 We should be able to filter the accounts over selected network. To that end, `web3Accounts` has a `genesisHash` param available and for the Aleph Zero Testnet we want:
 
@@ -162,7 +151,7 @@ With the accounts ready, we need to set them up with some TZERO (the Aleph Zero 
 To create a transaction we are going to be using the `@polkadot/api` library - [docs](https://polkadot.js.org/docs/api/).
 
 ```bash
-yarn add @polkadot/api
+npm install @polkadot/api
 ```
 
 We'll need to set it up and initialize it using the Aleph Zero Testnet websocket:
@@ -193,7 +182,7 @@ For the sake of simplicity we are going to transfer `50 TZERO` from the first ac
 Note that we're using the big number implementation from `@polkadot/util` to make sure we don't exceed JavaScript's safe integer range.
 
 ```bash
-yarn add @polkadot/util
+npm install @polkadot/util
 ```
 
 The balance on chain is kept in pico TZERO (10<sup>-12</sup>), so we need to adjust the transferred value. Instead of hardcoding the units here, we can get this information from the `api`.
