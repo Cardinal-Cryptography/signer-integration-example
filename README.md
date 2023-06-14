@@ -98,7 +98,7 @@ You can change connected accounts by going to:
 
 ## Loading accounts
 
-Now we can use `web3Accounts` helper function to get all accounts provided by the Signer:
+Now we can use `web3Accounts` helper function to get all the accounts provided by the Signer:
 
 ```jsx
 import { web3Accounts } from "@polkadot/extension-dapp";
@@ -125,7 +125,7 @@ setAccounts(accounts);
 </article>
 ```
 
-Above, we're filtering to get only accounts from the Signer, but you might choose to include all accounts.
+Above, we're filtering to get only the accounts from the Signer, but you might choose to include all accounts.
 
 ## Transaction: prepare accounts
 
