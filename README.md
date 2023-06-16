@@ -14,7 +14,7 @@ In this tutorial we are creating a simple webapp integrated with the Aleph Zero 
 
 ## Create project
 
-We're using [`vite`](https://vitejs.dev/) to set up the project. Run:
+We're using [`vite`](https://vitejs.dev/) to set up the React project. Run:
 
 ```bash
 npm create vite@latest signer-integration -- --template react-ts
@@ -72,6 +72,7 @@ type InjectedExtension = Awaited<ReturnType<typeof web3Enable>>[number];
 const [extensions, setExtensions] = useState<InjectedExtension[]>([]);
 
 const loadAccountsFromExtensions = async () => {
+  // extension-dapp API: connect to extensions; returns list of injected extensions
   const injectedExtensions = await web3Enable(APP_NAME);
 
   setExtensions(injectedExtensions);
@@ -107,6 +108,7 @@ type InjectedAccountWithMeta = Awaited<ReturnType<typeof web3Accounts>>[number];
 
 const [accounts, setAccounts] = useState<InjectedAccountWithMeta[]>([]);
 
+// extension-dapp API: get accounts from extensions filtered by name
 const accounts = await web3Accounts(
   { extensions: ["aleph-zero-signer"] }
 );
@@ -135,6 +137,7 @@ Create a second account in the Signer. Accounts have associated networks and we 
 We should be able to filter the accounts over selected network. To that end, `web3Accounts` has a `genesisHash` param available and for the Aleph Zero Testnet we want:
 
 ```js
+// extension-dapp API: get accounts from extensions filtered by name and chain
 const accounts = await web3Accounts({
   extensions: ["aleph-zero-signer"],
   genesisHash:
@@ -194,6 +197,7 @@ import { BN } from "@polkadot/util";
 const makeTransfer = async () => {
   const [first, second] = accounts;
 
+  // extension-dapp API: get address's injector
   const firstAddressInjector = await web3FromAddress(first.address);
 
   const transferAmount = new BN(50);
