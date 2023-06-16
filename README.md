@@ -60,7 +60,7 @@ Common pitfalls/troubleshooting
 
 ## Connect to Signer
 
-Now we are going to enable injected extensions (the API can handle more than one extension at a time, but in our case it's just the Signer). We will be using `web3Enable` - a util function from `@polkadot/extension-dapp`. It enables connections and returns a list of all injected extensions.
+Now we are going to enable injected extensions (the API can handle more than one extension at a time, but in our case it's just the Signer). We will be using `web3Enable` - a util function from `@polkadot/extension-dapp`. It enables the connection and returns a list of all injected extensions.
 
 We're going to call this method in the `onClick` handler of the 'Connect account' button:
 
@@ -82,7 +82,7 @@ const loadAccountsFromExtensions = async () => {
 </button>
 ```
 
-`APP_NAME` is a string - a name of an app that's trying to connect.
+`APP_NAME` is a string - a name of the app that's trying to connect. This is how your app is going to be represented inside the Signer.
 
 Important! You have to call `web3Enable` before any other utility functions.
 
