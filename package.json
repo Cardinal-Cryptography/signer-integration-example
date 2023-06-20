@@ -1,5 +1,5 @@
 {
-  "name": "signer-integration-2",
+  "name": "signer-integration",
   "private": true,
   "version": "0.0.0",
   "type": "module",
@@ -10,6 +10,9 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@polkadot/api": "^10.8.1",
+    "@polkadot/extension-dapp": "^0.46.4",
+    "@polkadot/util": "^12.2.2",
     "react": "^18.2.0",
     "react-dom": "^18.2.0"
   },
