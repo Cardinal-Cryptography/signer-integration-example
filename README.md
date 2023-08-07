@@ -9,7 +9,9 @@ In this tutorial we are creating a simple webapp integrated with the Aleph Zero 
 
 ## Requirements
 
-- Aleph Zero Signer {here past links to where you can get signer for different browsers}
+- Aleph Zero Signer
+  - [Install on Google Chrome, Brave, MS Edge and Opera](https://chrome.google.com/webstore/detail/aleph-zero-signer/opbinaebpmphpefcimknblieddamhmol)
+  - [Install on Firefox](https://addons.mozilla.org/en-US/firefox/addon/aleph-zero-signer/)
 - `node` 14.18+ or 16+ (required to use `vite` with `react`: your dependencies may vary if you choose to use a different framework).
 
 ## Create project
@@ -222,9 +224,11 @@ Important! Just because the transaction Promise doesn't throw an exception, it d
 
 ## Closing remarks
 
-We hope this guide helps you to seamlessly integrate your app with the Signer.
-In case of questions / bug reports / to find more content go to
-`<here some links probably?>`
+We hope you've enjoyed this tutorial, and now you know how to smoothly integrate your app with the Signer.
+
+For other tutorials, head over to [alephzero.org/developers](https://alephzero.org/developers)
+
+If you need any other help, make sure to join our Discord and look for the #sc-support channel!
 
 [no-accounts]: ./screenshots/no-accounts.png
 [connect-app-screenshot]: ./screenshots/connect-app-screen.png
