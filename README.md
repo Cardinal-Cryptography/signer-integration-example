@@ -9,7 +9,7 @@ In this tutorial we are creating a simple webapp integrated with the Aleph Zero 
 
 ## Requirements
 
-- Aleph Zero Signer
+- [Aleph Zero Signer](https://alephzero.org/signer)
   - [Install on Google Chrome, Brave, MS Edge and Opera](https://chrome.google.com/webstore/detail/aleph-zero-signer/opbinaebpmphpefcimknblieddamhmol)
   - [Install on Firefox](https://addons.mozilla.org/en-US/firefox/addon/aleph-zero-signer/)
 - `node` 14.18+ or 16+ (required to use `vite` with `react`: your dependencies may vary if you choose to use a different framework).
@@ -228,7 +228,7 @@ We hope you've enjoyed this tutorial, and now you know how to smoothly integrate
 
 For other tutorials, head over to [alephzero.org/developers](https://alephzero.org/developers)
 
-If you need any other help, make sure to join our Discord and look for the #sc-support channel!
+If you need any other help, make sure to join our [Discord](https://discord.gg/alephzero)!
 
 [no-accounts]: ./screenshots/no-accounts.png
 [connect-app-screenshot]: ./screenshots/connect-app-screen.png
