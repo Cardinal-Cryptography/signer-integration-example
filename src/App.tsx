@@ -66,9 +66,10 @@ function App() {
     );
     const finalAmount = transferAmount.mul(unitAdjustment);
 
-    await api.tx.balances
-      .transfer(second.address, finalAmount)
-      .signAndSend(first.address, { signer: firstAddressInjector.signer });
+    await (api.tx.balances.transferAllowDeath || api.tx.balances.transfer)(
+      second.address,
+      finalAmount
+    ).signAndSend(first.address, { signer: firstAddressInjector.signer });
   };
 
   return (
