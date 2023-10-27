@@ -206,9 +206,10 @@ const makeTransfer = async () => {
   const unitAdjustment = new BN(10).pow(new BN(api.registry.chainDecimals[0]));
   const finalAmount = transferAmount.mul(unitAdjustment);
 
-  await api.tx.balances
-    .transfer(second.address, finalAmount)
-    .signAndSend(first.address, { signer: firstAddressInjector.signer });
+  await (api.tx.balances.transferAllowDeath || api.tx.balances.transfer)(
+    second.address,
+    finalAmount
+  ).signAndSend(first.address, { signer: firstAddressInjector.signer });
 };
 
 <button onClick={makeTransfer}>Make transfer</button>;
